@@ -1,0 +1,133 @@
+﻿@model Bulky.Models.ViewModels.ProductVM
+
+<div class="card shadow border-0 mt-4 mb-5">
+    <div class="card-header bg-secondary bg-gradient m-lg-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">@(Model.Product.Id!=0?"Update":"Create") Product</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body p-4 mb-5">
+
+
+        <form method="post" class="row" enctype="multipart/form-data">
+            <input asp-for="Product.Id" hidden />
+            <input asp-for="Product.Image" hidden />
+            <div class="row">
+                <div class="col-10">
+
+                    <div class="border-0 p-3">
+
+                    <div class="form-floating py-2 col-12">
+                        <input asp-for="Product.Title" type="text" class="form-control border-0 shadow" />
+                        <label class="ms-2">Title:</label>
+                        <span asp-validation-for="Product.Title" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3 row pt-1">
+                        <label asp-for="Product.Description" class="pt-0" style="font-weight:600"></label>
+                    </div>
+                    <div class="border-1 border-dark" id="editor-container" style="height: 300px;"></div>
+
+                    <textarea asp-for="Product.Description" id="description" class="d-none" style="display:none ;"></textarea>
+                    <div class="border-1 border-dark" id="editor-container" style="height: 50px;"></div>
+                    <div class="form-floating py-2 col-12">
+                        <input asp-for="Product.ISBN" type="text" class="form-control border-0 shadow" />
+                        <label class="ms-2">ISBN:</label>
+                        <span asp-validation-for="Product.ISBN" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating py-2 col-12">
+                        <input asp-for="Product.Author" type="text" class="form-control border-0 shadow" />
+                        <label class="ms-2">Author:</label>
+                        <span asp-validation-for="Product.Author" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating py-2 col-12">
+                        <input asp-for="Product.ListPrice" type="text" class="form-control border-0 shadow" />
+                        <label class="ms-2">List price:</label>
+                        <span asp-validation-for="Product.ListPrice" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating py-2 col-12">
+                        <input asp-for="Product.Price" type="text" class="form-control border-0 shadow" />
+                        <label class="ms-2">Price:</label>
+                        <span asp-validation-for="Product.Price" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating py-2 col-12">
+                        <input asp-for="Product.Price50" type="text" class="form-control border-0 shadow" />
+                        <label class="ms-2">Price 50:</label>
+                        <span asp-validation-for="Product.Price50" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating py-2 col-12">
+                        <input asp-for="Product.Price100" type="text" class="form-control border-0 shadow" />
+                        <label class="ms-2">Price 100:</label>
+                        <span asp-validation-for="Product.Price100" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating py-2 col-12">
+                        <select asp-for="Product.CategoryId" asp-items="@Model.CategoryList" class="form-control border-0 shadow">
+                            <option disabled selected>--Select Category--</option>
+                        </select>
+                        <label class="ms-2">Category:</label>
+                        <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating py-2 col-12">
+                        <input type="file" name="file" class="form-control border-0 shadow" />
+                        <label class="ms-2">Image:</label>
+                        <span asp-validation-for="Product.Image" class="text-danger"></span>
+                    </div>
+
+                    </div>
+
+                </div>
+                <div class="col-2">
+                    <img src="@Model.Product.Image" width="100%" style="border-radius:5px; border:1px solid #bbb9b9" />
+                </div>
+            </div>
+
+
+
+            <div class="row pt-2">
+                <div class="col-6 col-md-3">
+                    @if (Model.Product.Id != 0)
+                    {
+                        <button type="submit" class="btn btn-primary" style="width:150px">Update</button>
+                    }
+                    else{
+
+                    <button type="submit" class="btn btn-primary" style="width:150px">Create</button>
+                        
+                        }
+
+                </div>
+                <div class="col-6 col-md-3">
+
+                    <a asp-controller="Product" asp-action="Index" class="btn btn-outline-primaryborder border" style="width:150px">
+                        Back
+                    </a>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    
+        <script>
+            var quill = new Quill('#editor-container', {
+                theme: 'snow'
+            });
+
+            // Get the hidden textarea
+            var descriptionInput = document.querySelector('#description');
+
+            // Set initial value from textarea
+            quill.root.innerHTML = descriptionInput.value;
+
+            // Listen for changes in Quill and update the textarea
+            quill.on('text-change', function () {
+                descriptionInput.value = quill.root.innerHTML;
+            });
+        </script>
+        <partial name="_ValidationScriptsPartial" />
+    
+}
